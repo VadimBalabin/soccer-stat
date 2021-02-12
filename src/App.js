@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Switch, Redirect } from "react-router-dom";
+import { PageContainer, Competition, Team, CardList } from './components';
+import { Alert } from 'antd'
+const { ErrorBoundary } = Alert;
 
-function App() {
+// TODO: Fix route path
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <PageContainer>
+      <ErrorBoundary>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={CardList}
+          />
+          <Route
+            exact
+            path="/competition/:id/:tab"
+            component={Competition}
+          />
+          <Route
+            exact
+            path="/competition/:id"
+            component={Competition}
+          />
+          <Route
+            exact
+            path="/teams"
+            component={CardList}
+          />
+          <Route
+            exact
+            path="/team/:id/:tab"
+            component={Team}
+          />
+          <Route
+            exact
+            path="/team/:id"
+            component={Team}
+          />
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </ErrorBoundary>
+    </PageContainer>
+  )
+};
 
 export default App;

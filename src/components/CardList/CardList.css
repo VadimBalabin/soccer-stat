@@ -1,0 +1,13 @@
+.card-menu.ant-menu {
+  text-align: end;
+  background: none;
+  margin-bottom: 24px;
+}
+
+.card-menu .ant-menu-item {
+  font-weight: 600;
+}
+
+.card-list .ant-row {
+  justify-content: center;
+}

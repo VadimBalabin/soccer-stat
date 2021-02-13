@@ -45,11 +45,11 @@ export function CardListBase() {
   function changeTab({ key }) {
     switch (key) {
       case 'competitions':
-        history.push('/');
+        history.replace('/');
         break;
 
       case 'teams':
-        history.push('/teams');
+        history.replace('/teams');
         break;
 
       default:
@@ -58,12 +58,15 @@ export function CardListBase() {
   }
 
   const handleClick = (code) => {
-    // remove the last letter
+    // remove the last character
     history.push(`/${tab.slice(0, -1)}/${code}`);
   };
 
   const handleSearch = (e) => {
     const val = e.target.value.trim();
+
+    writeSearchValueInUrl(val);
+
     if (!val.length) {
       setList(data);
       return;
@@ -73,6 +76,11 @@ export function CardListBase() {
       RegExp(val, 'i').test(item.name + item.area.name)
     );
     setList(filteredData);
+  };
+
+  const writeSearchValueInUrl = (val) => {
+    const prefix = tab === 'teams' ? '/teams' : '';
+    val ? history.replace(`${prefix}?q=${val}`) : history.replace(prefix);
   };
 
   return (
@@ -85,7 +93,7 @@ export function CardListBase() {
         data={list}
         loading={isFetching}
         loaded={loaded}
-        handleClick={handleClick}
+        onOpenCard={handleClick}
       />
     </>
   );

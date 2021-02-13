@@ -94,16 +94,16 @@ export function Competition() {
       //  for matches return the previous date range
       case 'matches':
         dateRangeRef.current
-          ? history.push(`/competition/${id}/${key}${dateRangeRef.current}`)
-          : history.push(`/competition/${id}/${key}`);
+          ? history.replace(`/competition/${id}/${key}${dateRangeRef.current}`)
+          : history.replace(`/competition/${id}/${key}`);
         break;
 
       case 'teams':
-        history.push(`/competition/${id}/${key}`);
+        history.replace(`/competition/${id}/${key}`);
         break;
 
       default:
-        history.push(`/competition/${id}`);
+        history.replace(`/competition/${id}`);
         break;
     }
   }

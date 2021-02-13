@@ -94,16 +94,16 @@ export function Team() {
       //  for matches return the previous date range
       case 'matches':
         dateRangeRef.current
-          ? history.push(`/team/${id}/${key}${dateRangeRef.current}`)
-          : history.push(`/team/${id}/${key}`);
+          ? history.replace(`/team/${id}/${key}${dateRangeRef.current}`)
+          : history.replace(`/team/${id}/${key}`);
         break;
 
       case 'squad':
-        history.push(`/team/${id}/${key}`);
+        history.replace(`/team/${id}/${key}`);
         break;
 
       default:
-        history.push(`/team/${id}`);
+        history.replace(`/team/${id}`);
         break;
     }
   }

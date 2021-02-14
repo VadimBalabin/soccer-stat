@@ -18,7 +18,6 @@ export function Competition() {
   const dispatch = useDispatch();
   const [curTab, setCurTab] = useState('seasons');
   const [tabData, setTabData] = useState([]);
-  const [refreshMatches, setRefreshMatshes] = useState(true);
   const competition = useSelector((s) => s.competition);
   const {
     loaded: loadedMatches,
@@ -26,6 +25,7 @@ export function Competition() {
     data: matches,
   } = useSelector((s) => s.matches);
   const { loaded, seasons, teams } = competition;
+  const [refreshMatches, setRefreshMatshes] = useState(!loadedMatches);
   const dateRangeRef = useRef('');
   const cardComponent = {
     seasons: SeasonList,
@@ -63,7 +63,7 @@ export function Competition() {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (refreshMatches || !loadedMatches) {
+    if (refreshMatches) {
       dispatch(matchesAction.list('competitions', id, search));
       if (search) dateRangeRef.current = search;
       setRefreshMatshes(false);

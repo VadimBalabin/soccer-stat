@@ -1,22 +1,22 @@
 import { teamApi } from '../../utils/api';
 import { openNotification } from '../../helpers';
 
+export const TEAM_SET_DATA = 'TEAM:SET_DATA';
+export const TEAM_FETCHING = 'TEAM:FETCHING';
+export const TEAM_LOADED = 'TEAM:LOADED';
+
 export const teamAction = {
   setData: (data) => ({
-    type: "TEAM:SET_DATA",
+    type: TEAM_SET_DATA,
     data
   }),
   fetching: (bool) => ({
-    type: "TEAM:FETCHING",
+    type: TEAM_FETCHING,
     isFetching: bool
   }),
   loaded: (bool) => ({
-    type: "TEAM:LOADED",
+    type: TEAM_LOADED,
     loaded: bool
-  }),
-  setMatches: (matches) => ({
-    type: "TEAM:SET_MATCHES",
-    matches
   }),
 
   get: (code) => dispatch => {
@@ -35,25 +35,5 @@ export const teamAction = {
       dispatch(teamAction.loaded(true))
     })
   },
-
-  // getContent: (code) => dispatch => {
-  //   dispatch(teamAction.fetching(true));
-  //   Promise.all([
-  //     competitionApi.get(code),
-  //     competitionApi.teams(code)
-  //   ]).then(([competition, teams]) => {
-  //     dispatch(teamAction.setData(competition.data, teams.data))
-  //   }).catch((err) => {
-  //     openNotification({
-  //       type: 'error',
-  //       title: 'Failed fetch the competition data',
-  //       text: err.response
-  //         ? `${err.response.error}: ${err.response.message}`
-  //         : err.toString()
-  //     });
-  //   }).finally(() => {
-  //     dispatch(teamAction.loaded(true))
-  //   })
-  // },
 }
 

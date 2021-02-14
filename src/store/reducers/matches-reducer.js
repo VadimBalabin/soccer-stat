@@ -1,3 +1,9 @@
+import {
+  MATCHES_SET_DATA,
+  MATCHES_FETCHING,
+  MATCHES_LOADED
+} from '../actions';
+
 const initialState = {
   isFetching: false,
   loaded: false,
@@ -7,21 +13,21 @@ const initialState = {
 export const matchesReducer = (state = initialState, payload) => {
 
   switch (payload.type) {
-    case "MATCHES:SET_DATA": {
+    case MATCHES_SET_DATA: {
       return {
         ...state,
         data: payload.data,
       }
     }
 
-    case "MATCHES:FETCHING": {
+    case MATCHES_FETCHING: {
       return {
         ...state,
         isFetching: payload.isFetching,
       }
     }
 
-    case "MATCHES:LOADED": {
+    case MATCHES_LOADED: {
       return {
         ...state,
         isFetching: false,

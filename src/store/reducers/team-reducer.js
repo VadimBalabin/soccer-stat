@@ -1,3 +1,9 @@
+import {
+  TEAM_SET_DATA,
+  TEAM_FETCHING,
+  TEAM_LOADED
+} from '../actions';
+
 const initialState = {
   isFetching: false,
   loaded: false,
@@ -20,7 +26,7 @@ const initialState = {
 export const teamReducer = (state = initialState, payload) => {
 
   switch (payload.type) {
-    case "TEAM:SET_DATA": {
+    case TEAM_SET_DATA: {
       const { activeCompetitions, address, area, crestUrl, email, founded, name, phone, shortName, squad, venue, website } = payload.data;
 
       return {
@@ -40,14 +46,14 @@ export const teamReducer = (state = initialState, payload) => {
       }
     }
 
-    case "TEAM:FETCHING": {
+    case TEAM_FETCHING: {
       return {
         ...state,
         isFetching: payload.isFetching,
       }
     }
 
-    case "TEAM:LOADED": {
+    case TEAM_LOADED: {
       return {
         ...state,
         isFetching: false,

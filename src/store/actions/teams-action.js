@@ -1,17 +1,21 @@
 import { teamApi } from '../../utils/api';
 import { openNotification } from '../../helpers';
 
+export const TEAMS_SET_DATA = 'TEAMS:SET_DATA';
+export const TEAMS_FETCHING = 'TEAMS:FETCHING';
+export const TEAMS_LOADED = 'TEAMS:LOADED';
+
 export const teamsAction = {
   setData: (data) => ({
-    type: "TEAMS:SET_DATA",
+    type: TEAMS_SET_DATA,
     data
   }),
   fetching: (bool) => ({
-    type: "TEAMS:FETCHING",
+    type: TEAMS_FETCHING,
     isFetching: bool
   }),
   loaded: (bool) => ({
-    type: "TEAMS:LOADED",
+    type: TEAMS_LOADED,
     loaded: bool
   }),
 
@@ -28,7 +32,7 @@ export const teamsAction = {
           : err.toString()
       });
     }).finally(() => {
-      dispatch(teamsAction.loaded(true))      
+      dispatch(teamsAction.loaded(true))
     })
   }
 }

@@ -1,17 +1,21 @@
 import { competitionApi } from '../../utils/api';
 import { openNotification } from '../../helpers';
 
+export const COMPETITIONS_SET_DATA = 'COMPETITIONS:SET_DATA';
+export const COMPETITIONS_FETCHING = 'COMPETITIONS:FETCHING';
+export const COMPETITIONS_LOADED = 'COMPETITIONS:LOADED';
+
 export const competitionsAction = {
   setData: (data) => ({
-    type: "COMPETITIONS:SET_DATA",
+    type: COMPETITIONS_SET_DATA,
     data
   }),
   fetching: (bool) => ({
-    type: "COMPETITIONS:FETCHING",
+    type: COMPETITIONS_FETCHING,
     isFetching: bool
   }),
   loaded: (bool) => ({
-    type: "COMPETITIONS:LOADED",
+    type: COMPETITIONS_LOADED,
     loaded: bool
   }),
 

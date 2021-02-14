@@ -1,3 +1,9 @@
+import {
+  COMPETITION_SET_DATA,
+  COMPETITION_FETCHING,
+  COMPETITION_LOADED
+} from '../actions';
+
 const initialState = {
   isFetching: false,
   loaded: false,
@@ -13,9 +19,8 @@ const initialState = {
 }
 
 export const comptetitionReducer = (state = initialState, payload) => {
-
   switch (payload.type) {
-    case "COMPETITION:SET_DATA": {
+    case COMPETITION_SET_DATA: {
       const { name, code, area, emblemUrl, currentSeason, seasons } = payload.competition;
       const { teams } = payload.teams
 
@@ -31,25 +36,18 @@ export const comptetitionReducer = (state = initialState, payload) => {
       }
     }
 
-    case "COMPETITION:FETCHING": {
+    case COMPETITION_FETCHING: {
       return {
         ...state,
         isFetching: payload.isFetching,
       }
     }
 
-    case "COMPETITION:LOADED": {
+    case COMPETITION_LOADED: {
       return {
         ...state,
         isFetching: false,
         loaded: payload.loaded,
-      }
-    }
-
-    case "COMPETITION:SET_TEAMS": {
-      return {
-        ...state,
-        teams: payload.teams
       }
     }
 

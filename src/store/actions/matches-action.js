@@ -1,17 +1,21 @@
 import { matchApi } from '../../utils/api';
 import { openNotification } from '../../helpers';
 
+export const MATCHES_SET_DATA = 'MATCHES:SET_DATA';
+export const MATCHES_FETCHING = 'MATCHES:FETCHING';
+export const MATCHES_LOADED = 'MATCHES:LOADED';
+
 export const matchesAction = {
   setData: (data) => ({
-    type: "MATCHES:SET_DATA",
+    type: MATCHES_SET_DATA,
     data,
   }),
   fetching: (bool) => ({
-    type: "MATCHES:FETCHING",
+    type: MATCHES_FETCHING,
     isFetching: bool
   }),
   loaded: (bool) => ({
-    type: "MATCHES:LOADED",
+    type: MATCHES_LOADED,
     loaded: bool
   }),
 

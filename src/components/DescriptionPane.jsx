@@ -8,7 +8,7 @@ export const DescriptionPane = ({
   description,
   children,
   loading,
-  imageWidth = 100,
+  imageWidth = 200,
 }) =>
   loading ? (
     <div className="ant-page-header">
@@ -25,8 +25,10 @@ export const DescriptionPane = ({
       }}
     >
       <Row justify="space-between">
-        <Col flex="1">{description}</Col>
-        <Col>
+        <Col flex="1" xs={24} md={24} lg={18}>
+          {description}
+        </Col>
+        <Col xs={24} md={6} lg={6}>
           <Image
             src={avatarUrl || noEmblem}
             shape="square"

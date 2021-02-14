@@ -16,3 +16,9 @@
 .ant-descriptions-item-container>.ant-descriptions-item-label {
   font-weight: 600;
 }
+
+.menu-button.ant-btn {
+  background: #e2e4e6;
+  box-shadow: -20px 20px 60px #ccced0,
+    20px -20px 60px #ffffff;
+}

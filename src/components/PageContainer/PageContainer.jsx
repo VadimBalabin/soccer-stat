@@ -13,6 +13,7 @@ export const PageContainer = ({ children }) => {
         <Space
           direction="vertical"
           style={{ marginTop: 64, padding: '0px 8px' }}
+          size="large"
         >
           <Tooltip placement="right" title="COMPETITIONS">
             <Button
@@ -21,6 +22,7 @@ export const PageContainer = ({ children }) => {
               type="text"
               size="large"
               onClick={() => history.push('/')}
+              className="menu-button"
             />
           </Tooltip>
           <Tooltip placement="right" title="TEAMS">
@@ -30,6 +32,7 @@ export const PageContainer = ({ children }) => {
               type="text"
               size="large"
               onClick={() => history.push('/teams')}
+              className="menu-button"
             />
           </Tooltip>
         </Space>

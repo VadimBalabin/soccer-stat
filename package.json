@@ -1,8 +1,8 @@
 {
   "name": "soccer-stat-app",
-  "version": "1.0.0",
-  "homepage": "https://vadimbalabin.github.io/soccer-stat-app/",
+  "version": "1.0.0",  
   "private": true,
+  "homepage": "https://vadimbalabin.github.io/soccer-stat/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
@@ -26,6 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {

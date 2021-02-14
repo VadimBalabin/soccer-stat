@@ -11,7 +11,7 @@ import 'antd/dist/antd.css';
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
         <App />
       </BrowserRouter>
     </Provider>

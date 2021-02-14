@@ -33,6 +33,11 @@ export function Team() {
   };
   const dateRangeRef = useRef('');
   const [tabData, setTabData] = useState([]);
+  const extraTabContent = {
+    matches: (
+      <DateRangeBox value={getDateRange(search)} onChange={onChangeRange} />
+    ),
+  };
 
   useEffect(() => {
     dispatch(teamAction.get(id));
@@ -46,6 +51,31 @@ export function Team() {
     }
   }, [dispatch, id, refreshMatches, loadedMatches, search]);
 
+  useEffect(() => {
+    if (!loaded) return;
+
+    const tabsData = {
+      'active competitions': activeCompetitions,
+      matches,
+      squad,
+    };
+    const variant = tab || 'active competitions';
+
+    setCurTab(variant);
+    setTabData(tabsData[variant]);
+  }, [loaded, matches, tab, activeCompetitions, squad]);
+
+  function onChangeRange(dt, str) {
+    setRefreshMatshes(true);
+    if (dt) {
+      const [from, to] = str;
+      dateRangeRef.current = `?dateFrom=${from}&dateTo=${to}`;
+    } else {
+      dateRangeRef.current = '';
+    }
+    history.replace(`/team/${id}/matches` + dateRangeRef.current);
+  }
+
   function showItem(item) {
     if (curTab !== 'active competitions') return;
 
@@ -57,39 +87,7 @@ export function Team() {
     } else history.push('../competition/' + item.code);
   }
 
-  function onChangeRange(dt, str) {
-    setRefreshMatshes(true);
-    if (dt) {
-      const [from, to] = str;
-      dateRangeRef.current = `?dateFrom=${from}&dateTo=${to}`;
-    } else {
-      dateRangeRef.current = '';
-    }
-    history.push(`/team/${id}/matches` + dateRangeRef.current);
-  }
-
-  useEffect(() => {
-    if (!loaded) return;
-
-    switch (tab) {
-      case 'matches':
-        setCurTab(tab);
-        setTabData(matches);
-        break;
-
-      case 'squad':
-        setCurTab(tab);
-        setTabData(squad);
-        break;
-
-      default:
-        setCurTab('active competitions');
-        setTabData(activeCompetitions);
-        break;
-    }
-  }, [loaded, matches, tab, activeCompetitions, squad]);
-
-  function changeTab(key) {
+   function changeTab(key) {
     switch (key) {
       //  for matches return the previous date range
       case 'matches':
@@ -124,14 +122,7 @@ export function Team() {
           { key: 'matches', count: matches.length },
           { key: 'squad', count: team.squad.length },
         ]}
-        extra={
-          curTab === 'matches' && (
-            <DateRangeBox
-              value={getDateRange(search)}
-              onChange={onChangeRange}
-            />
-          )
-        }
+        extra={extraTabContent[curTab]}
         onChange={changeTab}
       />
       {createElement(CardComponent[curTab], {

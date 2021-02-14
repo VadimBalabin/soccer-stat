@@ -1,4 +1,4 @@
-import { createElement, useEffect, useRef, useState, useCallback } from 'react';
+import { createElement, useEffect, useRef, useState } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { DateRangeBox } from '../DateRangeBox';
 import { SeasonList } from '../SeasonList';
@@ -37,24 +37,6 @@ export function Competition() {
       <DateRangeBox value={getDateRange(search)} onChange={onChangeRange} />
     ),
   };
-  const tabContent = useCallback(
-    (tab) => {
-      const tabs = {
-        seasons: {
-          data: seasons,
-        },
-        matches: {
-          data: matches,
-        },
-        teams: {
-          data: teams,
-        },
-      };
-      const variant = tab || 'seasons';
-      return [variant, tabs[variant]['data']];
-    },
-    [matches, seasons, teams]
-  );
 
   useEffect(() => {
     if (id) {
@@ -71,12 +53,17 @@ export function Competition() {
   }, [dispatch, id, refreshMatches, loadedMatches, search]);
 
   useEffect(() => {
-    if (loaded) {
-      const [key, data] = tabContent(tab);
-      setCurTab(key);
-      setTabData(data);
-    }
-  }, [loaded, tab, tabContent]);
+    if (!loaded) return;
+    const tabsData = {
+      seasons,
+      matches,
+      teams,
+    };
+    const variant = tab || 'seasons';
+
+    setCurTab(variant);
+    setTabData(tabsData[variant]);
+  }, [loaded, matches, seasons, tab, teams]);
 
   function onChangeRange(dt, str) {
     setRefreshMatshes(true);
@@ -86,7 +73,7 @@ export function Competition() {
     } else {
       dateRangeRef.current = '';
     }
-    history.push(`/competition/${id}/matches` + dateRangeRef.current);
+    history.replace(`/competition/${id}/matches` + dateRangeRef.current);
   }
 
   function changeTab(key) {

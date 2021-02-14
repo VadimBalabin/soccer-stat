@@ -2,7 +2,7 @@ import { Card, Avatar } from "antd";
 
 const { Meta } = Card;
 
-export default function TeamCardView({ item, handleClick }) {
+export default function TeamCard({ item, handleClick }) {
   const { id, name, area, crestUrl } = item;
 
   return (

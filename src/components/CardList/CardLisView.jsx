@@ -1,6 +1,6 @@
 import { List, Skeleton } from 'antd';
-import CompetitionCardView from '../CompetitionCardView';
-import TeamCardView from '../TeamCardView';
+import CompetitionCard from '../CompetitionCard';
+import TeamCard from '../TeamCard';
 
 export const CardListView = ({ tab, data, loading, loaded, onOpenCard }) => (
   <List
@@ -27,9 +27,9 @@ export const CardListView = ({ tab, data, loading, loaded, onOpenCard }) => (
         >
           {loaded &&
             (tab === 'competitions' ? (
-              <CompetitionCardView item={item} handleClick={onOpenCard} />
+              <CompetitionCard item={item} handleClick={onOpenCard} />
             ) : (
-              <TeamCardView item={item} handleClick={onOpenCard} />
+              <TeamCard item={item} handleClick={onOpenCard} />
             ))}
         </Skeleton>
       </List.Item>

@@ -3,7 +3,7 @@ import noEmblem from "../images/no-emblem.jfif";
 
 const { Meta } = Card;
 
-export default function CompetitionCardView({ item, handleClick }) {
+export default function CompetitionCard({ item, handleClick }) {
   const { code, emblemUrl, area, name } = item;
 
   return (

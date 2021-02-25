@@ -1,8 +1,4 @@
-import {
-  TEAM_SET_DATA,
-  TEAM_FETCHING,
-  TEAM_LOADED
-} from '../actions';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isFetching: false,
@@ -23,10 +19,11 @@ const initialState = {
   website: ''
 }
 
-export const teamReducer = (state = initialState, payload) => {
-
-  switch (payload.type) {
-    case TEAM_SET_DATA: {
+const teamSlice = createSlice({
+  name: 'TEAM',
+  initialState,
+  reducers: {
+    teamSetData: (state, { payload }) => {
       const { activeCompetitions, address, area, crestUrl, email, founded, name, phone, shortName, squad, venue, website } = payload.data;
 
       return {
@@ -44,24 +41,22 @@ export const teamReducer = (state = initialState, payload) => {
         venue,
         website
       }
-    }
-
-    case TEAM_FETCHING: {
+    },
+    teamFetching: (state, { payload }) => {
       return {
         ...state,
         isFetching: payload.isFetching,
       }
-    }
-
-    case TEAM_LOADED: {
+    },
+    teamLoaded: (state, { payload }) => {
       return {
         ...state,
         isFetching: false,
         loaded: payload.loaded,
       }
     }
-
-    default:
-      return state
   }
-}
+});
+
+export const { teamSetData, teamFetching, teamLoaded } = teamSlice.actions;
+export const teamReducer = teamSlice.reducer;

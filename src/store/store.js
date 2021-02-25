@@ -1,10 +1,14 @@
-import { composeWithDevTools } from "redux-devtools-extension";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import reducers from "./reducers/";
+import { configureStore } from '@reduxjs/toolkit'
+import thunk from 'redux-thunk';
+import { comptetitionReducer, comptetitionsReducer, teamReducer, teamsReducer, matchesReducer } from "./reducers";
 
-function configureStore() {
-  return createStore(reducers(), composeWithDevTools(applyMiddleware(thunk)))
-}
-
-export const store = configureStore();
+export default configureStore({
+  reducer: {
+    competition: comptetitionReducer,
+    competitions: comptetitionsReducer,
+    team: teamReducer,
+    teams: teamsReducer,
+    matches: matchesReducer
+  },
+  middleware: [thunk]
+})

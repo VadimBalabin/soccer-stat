@@ -1,32 +1,15 @@
 import { competitionApi } from '../../utils/api';
 import { openNotification } from '../../helpers';
-
-export const COMPETITION_SET_DATA = 'COMPETITION:SET_DATA';
-export const COMPETITION_FETCHING = 'COMPETITION:FETCHING';
-export const COMPETITION_LOADED = 'COMPETITION:LOADED';
+import { competitionSetData, competitionFetching, competitionLoaded } from '../reducers';
 
 export const competitionAction = {
-  setData: (competition, teams) => ({
-    type: COMPETITION_SET_DATA,
-    competition,
-    teams
-  }),
-  fetching: (bool) => ({
-    type: COMPETITION_FETCHING,
-    isFetching: bool
-  }),
-  loaded: (bool) => ({
-    type: COMPETITION_LOADED,
-    loaded: bool
-  }),
-
   getContent: (code) => dispatch => {
-    dispatch(competitionAction.fetching(true));
+    dispatch(competitionFetching({ isFetching: true }));
     Promise.all([
       competitionApi.get(code),
       competitionApi.teams(code)
     ]).then(([competition, teams]) => {
-      dispatch(competitionAction.setData(competition.data, teams.data))
+      dispatch(competitionSetData({ data: competition.data, teams: teams.data }))
     }).catch((err) => {
       openNotification({
         type: 'error',
@@ -36,7 +19,7 @@ export const competitionAction = {
           : err.toString()
       });
     }).finally(() => {
-      dispatch(competitionAction.loaded(true))
+      dispatch(competitionLoaded({ loaded: true }))
     })
   },
 }

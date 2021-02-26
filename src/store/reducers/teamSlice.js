@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isFetching: false,
-  loaded: false,
+  fetchingState: 'none',
+  errorText: '',
   activeCompetitions: [],
   address: '',
   area: {
@@ -24,7 +24,20 @@ const teamSlice = createSlice({
   initialState,
   reducers: {
     teamSetData: (state, { payload }) => {
-      const { activeCompetitions, address, area, crestUrl, email, founded, name, phone, shortName, squad, venue, website } = payload.data;
+      const {
+        activeCompetitions,
+        address,
+        area,
+        crestUrl,
+        email,
+        founded,
+        name,
+        phone,
+        shortName,
+        squad,
+        venue,
+        website
+      } = payload.data;
 
       return {
         ...state,
@@ -39,24 +52,25 @@ const teamSlice = createSlice({
         shortName,
         squad,
         venue,
-        website
+        website,
+        fetchingState: 'success'
       }
     },
-    teamFetching: (state, { payload }) => {
+    teamFetching: (state) => {
       return {
         ...state,
-        isFetching: payload.isFetching,
+        fetchingState: 'loading',
       }
     },
-    teamLoaded: (state, { payload }) => {
+    teamFetchingError: (state, { payload }) => {
       return {
         ...state,
-        isFetching: false,
-        loaded: payload.loaded,
+        fetchingState: 'failed',
+        errorText: payload.errorText
       }
-    }
+    },
   }
 });
 
-export const { teamSetData, teamFetching, teamLoaded } = teamSlice.actions;
+export const { teamSetData, teamFetching, teamFetchingError } = teamSlice.actions;
 export const teamReducer = teamSlice.reducer;

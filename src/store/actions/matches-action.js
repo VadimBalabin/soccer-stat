@@ -1,6 +1,5 @@
 import { matchApi } from '../../utils/api';
-import { openNotification } from '../../helpers';
-import { matchesSetData, matchesFetching, matchesLoaded } from '../reducers';
+import { matchesSetData, matchesFetching, matchesFetchingError } from '../reducers';
 
 export const matchesAction = {
   list: (resource, code, search) => dispatch => {
@@ -9,15 +8,11 @@ export const matchesAction = {
     matchApi.byResource(resource, code, search).then(({ data }) => {
       dispatch(matchesSetData({ data: data.matches }))
     }).catch((err) => {
-      openNotification({
-        type: 'error',
-        title: 'Failed fetch mathes of ' + resource,
-        text: err.response
+      dispatch(matchesFetchingError({
+        errorText: 'Failed fetch mathes of ' + resource + ' ' + err.response
           ? `${err.response.error}: ${err.response.message}`
           : err.toString()
-      });
-    }).finally(() => {
-      dispatch(matchesLoaded({ loaded: true }))
+      }))
     })
   },
 }

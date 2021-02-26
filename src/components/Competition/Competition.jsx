@@ -19,13 +19,15 @@ export function Competition() {
   const [curTab, setCurTab] = useState('seasons');
   const [tabData, setTabData] = useState([]);
   const competition = useSelector((s) => s.competition);
+  const { fetchingState: matchFetchingState, data: matches } = useSelector(
+    (s) => s.matches
+  );
   const {
-    loaded: loadedMatches,
-    isFetching: fetchingMatches,
-    data: matches,
-  } = useSelector((s) => s.matches);
-  const { loaded, seasons, teams } = competition;
-  const [refreshMatches, setRefreshMatshes] = useState(!loadedMatches);
+    fetchingState: competitionFetchingState,
+    seasons,
+    teams,
+  } = competition;
+  const [refreshMatches, setRefreshMatshes] = useState(true);
   const dateRangeRef = useRef('');
   const cardComponent = {
     seasons: SeasonList,
@@ -39,21 +41,22 @@ export function Competition() {
   };
 
   useEffect(() => {
-    if (id) {
-      dispatch(competitionAction.getContent(id));
-    }
+    dispatch(competitionAction.getContent(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (refreshMatches) {
+    if (competitionFetchingState === 'success' && refreshMatches) {
       dispatch(matchesAction.list('competitions', id, search));
       if (search) dateRangeRef.current = search;
       setRefreshMatshes(false);
     }
-  }, [dispatch, id, refreshMatches, loadedMatches, search]);
+  }, [dispatch, id, refreshMatches, search, competitionFetchingState]);
 
   useEffect(() => {
-    if (!loaded) return;
+    if (competitionFetchingState === 'failed') {
+      throw competition.errorText;
+    }
+    if (competitionFetchingState !== 'success') return;
     const tabsData = {
       seasons,
       matches,
@@ -63,7 +66,14 @@ export function Competition() {
 
     setCurTab(variant);
     setTabData(tabsData[variant]);
-  }, [loaded, matches, seasons, tab, teams]);
+  }, [
+    competitionFetchingState,
+    matches,
+    seasons,
+    tab,
+    teams,
+    competition.errorText,
+  ]);
 
   function onChangeRange(dt, str) {
     setRefreshMatshes(true);
@@ -100,7 +110,7 @@ export function Competition() {
       title={competition.name}
       subTitle={competition.code}
       avatarUrl={competition.emblemUrl}
-      loading={!loaded}
+      loading={competitionFetchingState === 'loading'}
       description={<CompetitionContent data={competition} />}
     >
       <TabMenu
@@ -115,7 +125,7 @@ export function Competition() {
       />
       {createElement(cardComponent[curTab], {
         data: tabData,
-        loading: fetchingMatches,
+        loading: matchFetchingState === 'loading',
       })}
     </DescriptionPane>
   );

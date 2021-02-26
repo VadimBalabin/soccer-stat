@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isFetching: false,
-  loaded: false,
+  fetchingState: 'none',
+  errorText: '',
   data: [],
 }
 
@@ -14,23 +14,24 @@ const matcheSlice = createSlice({
       return {
         ...state,
         data: payload.data,
+        fetchingState: 'success'
       }
     },
-    matchesFetching: (state, { payload }) => {
+    matchesFetching: (state) => {
       return {
         ...state,
-        isFetching: payload.isFetching,
+        fetchingState: 'loading',
       }
     },
-    matchesLoaded: (state, { payload }) => {
+    matchesFetchingError: (state, { payload }) => {
       return {
         ...state,
-        isFetching: false,
-        loaded: payload.loaded,
+        fetchingState: 'failed',
+        errorText: payload.errorText
       }
     },
   }
 });
 
 export const matchesReducer = matcheSlice.reducer;
-export const { matchesSetData, matchesFetching, matchesLoaded } = matcheSlice.actions;
+export const { matchesSetData, matchesFetching, matchesFetchingError } = matcheSlice.actions;

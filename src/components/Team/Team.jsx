@@ -18,19 +18,18 @@ export function Team() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [curTab, setCurTab] = useState('active competitions');
-  const {
-    loaded: loadedMatches,
-    isFetching: fetchingMatches,
-    data: matches,
-  } = useSelector((s) => s.matches);
+  const { isFetching: fetchingMatches, data: matches } = useSelector(
+    (s) => s.matches
+  );
   const team = useSelector((s) => s.team);
-  const { loaded, activeCompetitions, squad } = team;
+  const { fetchingState: teamFetchingState, activeCompetitions, squad } = team;
   const [refreshMatches, setRefreshMatshes] = useState(true);
   const CardComponent = {
     'active competitions': CompetitionList,
     matches: MatchList,
     squad: SquadList,
   };
+
   const dateRangeRef = useRef('');
   const [tabData, setTabData] = useState([]);
   const extraTabContent = {
@@ -44,15 +43,18 @@ export function Team() {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (refreshMatches || !loadedMatches) {
+    if (teamFetchingState === 'success' && refreshMatches) {
       dispatch(matchesAction.list('teams', id, search));
       if (search) dateRangeRef.current = search;
       setRefreshMatshes(false);
     }
-  }, [dispatch, id, refreshMatches, loadedMatches, search]);
+  }, [dispatch, id, refreshMatches, search, teamFetchingState]);
 
   useEffect(() => {
-    if (!loaded) return;
+    if (teamFetchingState === 'failed') {
+      throw team.errorText;
+    }
+    if (teamFetchingState !== 'success') return;
 
     const tabsData = {
       'active competitions': activeCompetitions,
@@ -63,7 +65,14 @@ export function Team() {
 
     setCurTab(variant);
     setTabData(tabsData[variant]);
-  }, [loaded, matches, tab, activeCompetitions, squad]);
+  }, [
+    teamFetchingState,
+    matches,
+    tab,
+    activeCompetitions,
+    squad,
+    team.errorText,
+  ]);
 
   function onChangeRange(dt, str) {
     setRefreshMatshes(true);
@@ -87,7 +96,7 @@ export function Team() {
     } else history.push('../competition/' + item.code);
   }
 
-   function changeTab(key) {
+  function changeTab(key) {
     switch (key) {
       //  for matches return the previous date range
       case 'matches':
@@ -112,7 +121,7 @@ export function Team() {
       subTitle={team.area.name}
       avatarUrl={team.crestUrl}
       description={<TeamContent data={team} />}
-      loading={team.isFetching}
+      loading={teamFetchingState === 'loading'}
       imageWidth={200}
     >
       <TabMenu

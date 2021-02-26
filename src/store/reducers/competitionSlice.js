@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isFetching: false,
-  loaded: false,
+  fetchingState: 'none',
+  errorText: '',
   name: '',
   code: '',
   area: {
@@ -31,23 +31,24 @@ const competitionSlice = createSlice({
         currentSeason,
         seasons,
         teams,
+        fetchingState: 'success'
       }
     },
-    competitionFetching: (state, { payload }) => {
+    competitionFetching: (state) => {
       return {
         ...state,
-        isFetching: payload.isFetching,
+        fetchingState: 'loading',
       }
     },
-    competitionLoaded: (state, { payload }) => {
+    competitionFetchingError: (state, { payload }) => {
       return {
         ...state,
-        isFetching: false,
-        loaded: payload.loaded
+        fetchingState: 'failed',
+        errorText: payload.errorText
       }
     }
   }
 });
 
-export const { competitionSetData, competitionFetching, competitionLoaded } = competitionSlice.actions;
+export const { competitionSetData, competitionFetching, competitionFetchingError } = competitionSlice.actions;
 export const comptetitionReducer = competitionSlice.reducer;
